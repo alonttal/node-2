@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const { ObjectID } = require('mongodb');
@@ -8,6 +7,7 @@ const serverConfig = require('./server-config')
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+const {authenticate} = require('./middleware/authenticate')
 
 var app = express();
 
@@ -95,6 +95,10 @@ app.post('/users', (req, res) => {
         .then(() => user.generateAuthToken())
         .then((token) => res.header('x-auth', token).send(user))
         .catch((error) => res.status(400).send(error));
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
 });
 
 app.listen(process.env.PORT, () => {
