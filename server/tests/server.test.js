@@ -238,12 +238,12 @@ describe('POST /users', () => {
     });
 
     it('should return validation errors if request invalid', (done) => {
-        var email = 'exampledomain.conm'
-        var password = '123!';
+        var badEmail = 'exampledomain.conm'
+        var badPassword = '123!';
 
         request(app)
         .post('/users')
-        .send({email, password})
+        .send({badEmail, badPassword})
         .expect(400)
         .end(done);
     });
